@@ -1,19 +1,20 @@
 class GroupOrganizationsController < ApplicationController
     before_action :find_group
 
-    def new_pricing
-    end
-
     def create_pricing
         @organizations = @group_organization.organizations
 
-        render json: PriceCreator.new(@organizations, price_params[:base_price]).to_json 
+        if @organizations.any?
+            render json: PricingCreator.new(@organizations, price_params[:base_price]).call.to_json 
+        else
+            render json: { warning: 'There is no organization in this group' }
+        end
     end
 
     private
 
     def price_params
-        params.require(:group_organization).permit(:model_type_name, :base_price)
+        params.permit(:group_organization_id, :model_type_name, :base_price)
     end
 
     def find_group
