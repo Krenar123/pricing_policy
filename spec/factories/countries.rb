@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :country do
     name { 'Macedonia' }
-    country_cody { 'MK' }
+    country_code { 'MK' }
   end
 end
